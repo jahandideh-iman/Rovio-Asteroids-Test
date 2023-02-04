@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-namespace Astroids.Presentation
+namespace Asteroids.Presentation
 {
     public class SpaceshipAvatar : MonoBehaviour
     {

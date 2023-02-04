@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Astroids.Presentation
+namespace Asteroids.Presentation
 {
     [RequireComponent(typeof(BoxCollider2D))]
     public class ScreenWrapper : MonoBehaviour
