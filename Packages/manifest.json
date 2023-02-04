@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "com.arman.foundation.configuration_management": "file:com.arman.foundation.configuration_management-1.0.0.tgz",
+    "com.arman.foundation.package_basics": "file:com.arman.foundation.package_basics-0.1.0.tgz",
+    "com.arman.foundation.service_locating": "file:com.arman.foundation.service_locating-0.1.0.tgz",
+    "com.arman.presentation.ui-management": "file:com.arman.presentation.ui-management-0.1.0-preview.tgz",
     "com.unity.collab-proxy": "2.0.0",
     "com.unity.feature.2d": "1.0.0",
     "com.unity.ide.rider": "3.0.18",

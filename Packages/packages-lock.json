@@ -1,5 +1,31 @@
 {
   "dependencies": {
+    "com.arman.foundation.configuration_management": {
+      "version": "file:com.arman.foundation.configuration_management-1.0.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
+    "com.arman.foundation.package_basics": {
+      "version": "file:com.arman.foundation.package_basics-0.1.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
+    "com.arman.foundation.service_locating": {
+      "version": "file:com.arman.foundation.service_locating-0.1.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
+    "com.arman.presentation.ui-management": {
+      "version": "file:com.arman.presentation.ui-management-0.1.0-preview.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.arman.foundation.service_locating": "0.1.0"
+      }
+    },
     "com.unity.2d.animation": {
       "version": "7.0.9",
       "depth": 1,
