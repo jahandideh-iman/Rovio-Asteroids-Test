@@ -8,11 +8,10 @@ namespace Asteroids.Presentation
     [RequireComponent(typeof(BoxCollider2D))]
     public class ScreenWrapper : MonoBehaviour
     {
+        [SerializeField] List<string> supportedTags;
+        [SerializeField] float teleportOffset;
+
         BoxCollider2D boundaryCollider;
-
-        [SerializeField]
-        private float teleportOffset;
-
 
         void Awake()
         {
@@ -22,8 +21,15 @@ namespace Asteroids.Presentation
 
         void OnTriggerExit2D(Collider2D collision)
         {
-            // TODO: Try using Rigid Body MovePosition
-            collision.transform.position = CalculateWrappingPossition(collision.transform.position);
+            foreach(var tag in supportedTags)
+            {
+                if(collision.CompareTag(tag))
+                {
+                    // TODO: Try using Rigid Body MovePosition
+                    collision.transform.position = CalculateWrappingPossition(collision.transform.position);
+                    break;
+                }
+            }
         }
 
         Vector2 CalculateWrappingPossition(Vector2 position)
