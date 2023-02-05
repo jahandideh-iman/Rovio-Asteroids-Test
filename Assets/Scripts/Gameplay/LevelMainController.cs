@@ -10,10 +10,14 @@ namespace Asteroids.Game
 
     public class LevelMainController : MainGameController
     {
-        public event Action LevelEndedEvent = delegate { };
+        static readonly int ScorePerAsteroid = 100;
+
+        public event Action<int> OnScoreChanged = delegate { };
+
         readonly Action exitLevelAction;
 
         public SpaceshipAvatar Spaceship { get; private set; }
+        public int Score { get; private set; }
 
         AsteroidsController asteroidsController;
         EndConditionController endConditionController;
@@ -28,7 +32,15 @@ namespace Asteroids.Game
             Spaceship = spaceship;
 
             asteroidsController = new AsteroidsController(asteroids);
+            asteroidsController.OnAsteroidRemoved += HandleAsteroidScore;
             endConditionController = new EndConditionController(spaceship, asteroidsController, levelEndingPort, ExitLevel);
+        }
+
+        private void HandleAsteroidScore()
+        {
+            // NOTE: Scoring system can be improved.
+            Score += ScorePerAsteroid;
+            OnScoreChanged.Invoke(Score);
         }
 
         public void ExitLevel()

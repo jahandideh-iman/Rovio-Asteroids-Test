@@ -12,7 +12,7 @@ namespace Asteroids.Presentation
         [SerializeField] MessagePopup messagePromptPopupPrefab;
         [SerializeField] LevelResultPopup levelResultPopupPrefab;
 
-        [SerializeField] TextMeshProUGUI livesText;
+        [SerializeField] TextMeshProUGUI healthText;
         [SerializeField] TextMeshProUGUI scoreText;
 
         LevelMainController mainController;
@@ -21,9 +21,11 @@ namespace Asteroids.Presentation
         {
             this.mainController = mainController;
 
-            mainController.Spaceship.OnDamageTaken += UpdateLives;
+            mainController.Spaceship.OnDamageTaken += UpdateHealth;
+            mainController.OnScoreChanged += UpdateScore;
 
-            UpdateLives(mainController.Spaceship);
+            UpdateHealth(mainController.Spaceship);
+            UpdateScore(mainController.Score);
         }
 
         public override void OnBackButtonPressed()
@@ -35,7 +37,12 @@ namespace Asteroids.Presentation
         public void OpenExitPopup()
         {
             var popup = Instantiate(messagePromptPopupPrefab);
-            popup.Setup("Do you want to exit?", onConfirm: mainController.ExitLevel, onCancel: delegate { });
+
+            popup.Setup(
+                "Do you want to exit?", 
+                onConfirm: mainController.ExitLevel,
+                onCancel: delegate { });
+
             uiManager.OpenPopUp(popup);
         }
 
@@ -47,7 +54,7 @@ namespace Asteroids.Presentation
         public void OpenEndScreen(Action onContinue)
         {
             var levelResultPopup = Instantiate(levelResultPopupPrefab);
-            levelResultPopup.Setup(0, onContinue);
+            levelResultPopup.Setup(mainController.Score, onContinue);
             uiManager.OpenPopUp(levelResultPopup);
         }
 
@@ -56,10 +63,9 @@ namespace Asteroids.Presentation
             scoreText.SetText(score.ToString());
         }
 
-        private void UpdateLives(SpaceshipAvatar spaceship)
+        private void UpdateHealth(SpaceshipAvatar spaceship)
         {
-            livesText.SetText(spaceship.Health.ToString());
-
+            healthText.SetText(spaceship.Health.ToString());
         }
     }
 }

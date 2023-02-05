@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lives
+  m_text: Health
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -636,7 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   messagePromptPopupPrefab: {fileID: 2518727841605714635, guid: cda60aeca2eb9fe4fbb337fc029acc4d, type: 3}
   levelResultPopupPrefab: {fileID: 5578187082021870453, guid: 9faaa65f537941846b177139043eb7a0, type: 3}
-  livesText: {fileID: 109227346}
+  healthText: {fileID: 109227346}
   scoreText: {fileID: 1366452995}
 --- !u!224 &622926669
 RectTransform:
@@ -669,6 +669,10 @@ PrefabInstance:
     - target: {fileID: 830847473502895969, guid: 23f4b2a5c1f71a2458e7bcb19fed6a6b, type: 3}
       propertyPath: m_Name
       value: Asteroid 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 830847473502895969, guid: 23f4b2a5c1f71a2458e7bcb19fed6a6b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 830847473502895973, guid: 23f4b2a5c1f71a2458e7bcb19fed6a6b, type: 3}
       propertyPath: m_RootOrder
@@ -739,7 +743,7 @@ GameObject:
   m_Component:
   - component: {fileID: 879301963}
   m_Layer: 5
-  m_Name: Lives
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -926,6 +930,10 @@ PrefabInstance:
     - target: {fileID: 830847473502895969, guid: 23f4b2a5c1f71a2458e7bcb19fed6a6b, type: 3}
       propertyPath: m_Name
       value: Asteroid 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 830847473502895969, guid: 23f4b2a5c1f71a2458e7bcb19fed6a6b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 830847473502895973, guid: 23f4b2a5c1f71a2458e7bcb19fed6a6b, type: 3}
       propertyPath: m_RootOrder
