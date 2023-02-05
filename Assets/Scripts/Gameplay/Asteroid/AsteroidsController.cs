@@ -8,6 +8,8 @@ namespace Asteroids.Game
 {
     public class AsteroidsController
     {
+        public event Action OnAsteroidRemoved = delegate { };
+
         private List<AsteroidAvatar> asteroids;
 
         public AsteroidsController(List<AsteroidAvatar> asteroids)
@@ -16,6 +18,11 @@ namespace Asteroids.Game
 
             foreach (var asteroid in asteroids)
                 RegisterOnEvents(asteroid);
+        }
+
+        public bool HasAnyAsteroid()
+        {
+            return asteroids.Count > 0;
         }
 
         private void RegisterOnEvents(AsteroidAvatar asteroid)
@@ -29,11 +36,12 @@ namespace Asteroids.Game
             asteroids.Remove(asteroid);
             asteroid.OnDamageTaken -= SplitAsteroid;
             asteroid.OnDestroyed -= RemoveFromAsteroids;
+
+            OnAsteroidRemoved.Invoke();
         }
 
         private void SplitAsteroid(AsteroidAvatar asteroid)
         {
-
             if (asteroid.Health <= 0)
                 return;
 
@@ -61,6 +69,5 @@ namespace Asteroids.Game
             else
                 return direction.normalized;
         }
-
     }
 }

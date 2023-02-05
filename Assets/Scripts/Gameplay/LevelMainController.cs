@@ -28,7 +28,7 @@ namespace Asteroids.Game
             Spaceship = spaceship;
 
             asteroidsController = new AsteroidsController(asteroids);
-            endConditionController = new EndConditionController(spaceship, levelEndingPort, ExitLevel);
+            endConditionController = new EndConditionController(spaceship, asteroidsController, levelEndingPort, ExitLevel);
         }
 
         public void ExitLevel()

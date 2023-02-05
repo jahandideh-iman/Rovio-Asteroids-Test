@@ -13,32 +13,37 @@ namespace Asteroids.Game
 
     public class EndConditionController
     {
-        SpaceshipAvatar spaceship;
         Action exitLevelAction;
         LevelEndingPort levelEndingPort;
+        AsteroidsController asteroidsController;
 
-        public EndConditionController(SpaceshipAvatar spaceship, LevelEndingPort levelEndingPort, Action exitLevelAction)
+        public EndConditionController(SpaceshipAvatar spaceship, AsteroidsController asteroidsController, LevelEndingPort levelEndingPort, Action exitLevelAction)
         {
-            this.spaceship = spaceship;
             this.exitLevelAction = exitLevelAction;
             this.levelEndingPort = levelEndingPort;
+            this.asteroidsController = asteroidsController;
 
             spaceship.OnDamageTaken += CheckSpaceshipHealth;
-
+            asteroidsController.OnAsteroidRemoved += CheckAsteroids;
         }
 
         private void CheckSpaceshipHealth(SpaceshipAvatar spaceship)
         {
-            System.Diagnostics.Debug.Assert(spaceship == this.spaceship);
-
             if (spaceship.Health <= 0)
             {
                 spaceship.OnDamageTaken -= CheckSpaceshipHealth;
-                spaceship = null;
 
                 levelEndingPort.OpenEndScreen(onContinue: exitLevelAction);
             }
         }
 
+        private void CheckAsteroids()
+        {
+            if (!asteroidsController.HasAnyAsteroid())
+            {
+                asteroidsController.OnAsteroidRemoved -= CheckAsteroids;
+                levelEndingPort.OpenEndScreen(onContinue: exitLevelAction);
+            }
+        }
     }
 }
