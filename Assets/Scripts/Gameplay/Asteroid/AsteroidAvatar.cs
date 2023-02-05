@@ -8,6 +8,9 @@ namespace Asteroids.Presentation
     {
         static readonly int StandardHealth = 3;
 
+        public event Action<AsteroidAvatar> OnDamageTaken = delegate { };
+        public event Action<AsteroidAvatar> OnDestroyed = delegate { };
+
         [SerializeField] new Rigidbody2D rigidbody;
         [SerializeField] float speed;
         [SerializeField] Vector2 initialDirection;
@@ -19,7 +22,7 @@ namespace Asteroids.Presentation
             Setup(3, initialDirection.normalized);
         }
 
-        private void Setup(int health, Vector2 direction)
+        public void Setup(int health, Vector2 direction)
         {
             initialDirection = direction;
 
@@ -29,39 +32,29 @@ namespace Asteroids.Presentation
             transform.localScale = Vector3.one * ((float)Health / StandardHealth);
         }
 
+        public void Destroy()
+        {
+            Destroy(this.gameObject);
+            OnDestroyed(this);
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Bullet"))
             {
                 Destroy(collision.gameObject);
-                TakeDamage();
+                ApplyDamage();
             }
         }
 
-        private void TakeDamage()
+        private void ApplyDamage()
         {
             Health -= 1;
 
+            OnDamageTaken(this);
+
             if (Health <= 0)
-                return;
-
-            var asteroid1 = Instantiate(this, this.transform.parent, true);
-            var asteroid2 = Instantiate(this, this.transform.parent, true);
-
-            asteroid1.Setup(Health, RandomDirection());
-            asteroid2.Setup(Health, RandomDirection());
-
-            Destroy(this.gameObject);
-        }
-
-        private Vector2 RandomDirection()
-        {
-            var direction = new Vector2(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
-
-            if (direction.x == 0 && direction.y == 0)
-                return new Vector2(1, 0);
-            else
-                return direction.normalized;
+                Destroy();
         }
     }
 }

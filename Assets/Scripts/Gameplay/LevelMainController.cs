@@ -1,46 +1,34 @@
 ﻿using Asteroids.Presentation;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Asteroids.Game
 {
-    public interface LevelEndingPort
-    {
-        void OpenEndScreen(Action onContinue);
-    }
 
     public class LevelMainController : MainGameController
     {
         public event Action LevelEndedEvent = delegate { };
-
         readonly Action exitLevelAction;
 
         public SpaceshipAvatar Spaceship { get; private set; }
 
-        LevelEndingPort levelEndingPort;
+        AsteroidsController asteroidsController;
+        EndConditionController endConditionController;
 
         public LevelMainController(Action exitLevelAction)
         {
             this.exitLevelAction = exitLevelAction;
         }
 
-        public void Setup(SpaceshipAvatar spaceship, LevelEndingPort levelEndingPort)
+        public void Setup(SpaceshipAvatar spaceship, List<AsteroidAvatar> asteroids, LevelEndingPort levelEndingPort)
         {
             Spaceship = spaceship;
-            spaceship.OnLivesChanged += CheckSpaceshipHealth;
 
-            this.levelEndingPort = levelEndingPort;
-        }
-
-        private void CheckSpaceshipHealth(int health)
-        {
-            if (health <= 0)
-            {
-                Spaceship.OnLivesChanged -= CheckSpaceshipHealth;
-                UnityEngine.Object.Destroy(Spaceship.gameObject);
-                Spaceship = null;
-
-                levelEndingPort.OpenEndScreen(onContinue: ExitLevel);
-            }
+            asteroidsController = new AsteroidsController(asteroids);
+            endConditionController = new EndConditionController(spaceship, levelEndingPort, ExitLevel);
         }
 
         public void ExitLevel()

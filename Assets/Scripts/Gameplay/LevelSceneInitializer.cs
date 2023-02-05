@@ -2,6 +2,7 @@
 using Arman.UIManagement;
 using Asteroids.Game;
 using Asteroids.Presentation;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Asteroids.Main
@@ -23,7 +24,10 @@ namespace Asteroids.Main
 
             var mainController = gameManager.MainController as LevelMainController;
 
-            mainController.Setup(spaceshipAvatar, levelEndingPort: levelMainWindow);
+            mainController.Setup(
+                spaceshipAvatar,
+                new List<AsteroidAvatar>(FindObjectsByType<AsteroidAvatar>(FindObjectsSortMode.None)), 
+                levelEndingPort: levelMainWindow);
 
             levelMainWindow.Setup(mainController);
         }

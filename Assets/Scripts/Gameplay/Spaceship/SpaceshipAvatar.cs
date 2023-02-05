@@ -15,7 +15,7 @@ namespace Asteroids.Presentation
 
         public int Health { get; private set; } = 3; // TODO: Make it configurable
 
-        public event Action<int> OnLivesChanged = delegate { };
+        public event Action<SpaceshipAvatar> OnDamageTaken = delegate { };
 
         private void Update()
         {
@@ -51,7 +51,10 @@ namespace Asteroids.Presentation
         {
             Health -= 1;
 
-            OnLivesChanged(Health);
+            OnDamageTaken(this);
+
+            if (Health <= 0)
+                Destroy(this.gameObject);
         }
     }
 }

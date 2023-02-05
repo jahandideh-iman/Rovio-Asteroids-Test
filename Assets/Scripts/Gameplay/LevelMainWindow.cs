@@ -21,9 +21,9 @@ namespace Asteroids.Presentation
         {
             this.mainController = mainController;
 
-            mainController.Spaceship.OnLivesChanged += UpdateLives;
+            mainController.Spaceship.OnDamageTaken += UpdateLives;
 
-            UpdateLives(mainController.Spaceship.Health);
+            UpdateLives(mainController.Spaceship);
         }
 
         public override void OnBackButtonPressed()
@@ -56,9 +56,9 @@ namespace Asteroids.Presentation
             scoreText.SetText(score.ToString());
         }
 
-        private void UpdateLives(int lives)
+        private void UpdateLives(SpaceshipAvatar spaceship)
         {
-            livesText.SetText(lives.ToString());
+            livesText.SetText(spaceship.Health.ToString());
 
         }
     }
