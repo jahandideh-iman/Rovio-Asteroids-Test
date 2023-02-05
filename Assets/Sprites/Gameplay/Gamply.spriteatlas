@@ -27,7 +27,7 @@ SpriteAtlas:
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
-      enableTightPacking: 1
+      enableTightPacking: 0
       enableAlphaDilation: 0
     secondaryTextureSettings: {}
     variantMultiplier: 1
@@ -39,14 +39,18 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 5cec2040a39ec10448880cf3d7a44112, type: 3}
+  - {fileID: 21300000, guid: 7fe117c94775122439c99653e5eaacf4, type: 3}
   - {fileID: 21300000, guid: c0e75b1a337077e418b12a47529ca657, type: 3}
   - {fileID: 21300000, guid: c771156a90255d749b1a52aa4d97b2fe, type: 3}
   - {fileID: 21300000, guid: 77fddbcc0ffb90243b13c987fa1d9ae3, type: 3}
+  - {fileID: 21300000, guid: c5e976ffc9fcc0642b52b9b538743ba3, type: 3}
   m_PackedSpriteNamesToIndex:
   - SpaceBackground
+  - HPIcon
   - Asteroid
   - Bullet
   - Spaceship
+  - ScoreIcon
   m_RenderDataMap: {}
   m_Tag: Gamply
   m_IsVariant: 0

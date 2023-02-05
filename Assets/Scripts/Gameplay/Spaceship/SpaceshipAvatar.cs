@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 namespace Asteroids.Presentation
@@ -12,6 +13,10 @@ namespace Asteroids.Presentation
         [SerializeField] float thrust;
         [SerializeField] float torque;
 
+        public int Health { get; private set; } = 3; // TODO: Make it configurable
+
+        public event Action<int> OnLivesChanged = delegate { };
+
         private void Update()
         {
             if (Input.GetKey(KeyCode.W))
@@ -23,6 +28,7 @@ namespace Asteroids.Presentation
             {
                 rigidbody.AddTorque(torque);
             }
+
             if (Input.GetKey(KeyCode.D))
             {
                 rigidbody.AddTorque(-torque);
@@ -32,6 +38,20 @@ namespace Asteroids.Presentation
             {
                 bulletSpawner.SpawnBullet(bulletSpawnPositionTransform.position, this.transform.up);
             }
+        }
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Asteroid"))
+            {
+                ApplyDamage();
+            }
+        }
+
+        private void ApplyDamage()
+        {
+            Health -= 1;
+
+            OnLivesChanged(Health);
         }
     }
 }

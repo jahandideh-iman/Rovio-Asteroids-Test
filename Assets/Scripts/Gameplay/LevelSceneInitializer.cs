@@ -11,6 +11,8 @@ namespace Asteroids.Main
         [SerializeField] LevelMainWindow levelMainWindow = default;
         [SerializeField] Camera mainCamera = default;
 
+        [SerializeField] SpaceshipAvatar spaceshipAvatar;
+
         private void Awake()
         {
             var gameManager = ServiceLocator.Find<GameManager>();
@@ -21,7 +23,7 @@ namespace Asteroids.Main
 
             var mainController = gameManager.MainController as LevelMainController;
 
-            mainController.Setup();
+            mainController.Setup(spaceshipAvatar, levelEndingPort: levelMainWindow);
 
             levelMainWindow.Setup(mainController);
         }

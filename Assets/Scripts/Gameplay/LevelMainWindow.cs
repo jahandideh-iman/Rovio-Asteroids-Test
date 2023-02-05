@@ -1,19 +1,29 @@
 ﻿using Arman.UIManagement;
 using Asteroids.Game;
+using System;
+using TMPro;
 using UnityEngine;
 
 namespace Asteroids.Presentation
 {
 
-    public class LevelMainWindow : MainWindow
+    public class LevelMainWindow : MainWindow, LevelEndingPort
     {
         [SerializeField] MessagePopup messagePromptPopupPrefab;
+        [SerializeField] LevelResultPopup levelResultPopupPrefab;
+
+        [SerializeField] TextMeshProUGUI livesText;
+        [SerializeField] TextMeshProUGUI scoreText;
 
         LevelMainController mainController;
 
         public void Setup(LevelMainController mainController)
         {
             this.mainController = mainController;
+
+            mainController.Spaceship.OnLivesChanged += UpdateLives;
+
+            UpdateLives(mainController.Spaceship.Health);
         }
 
         public override void OnBackButtonPressed()
@@ -32,6 +42,24 @@ namespace Asteroids.Presentation
         public UIManager UIManager()
         {
             return uiManager;
+        }
+
+        public void OpenEndScreen(Action onContinue)
+        {
+            var levelResultPopup = Instantiate(levelResultPopupPrefab);
+            levelResultPopup.Setup(0, onContinue);
+            uiManager.OpenPopUp(levelResultPopup);
+        }
+
+        private void UpdateScore(int score)
+        {
+            scoreText.SetText(score.ToString());
+        }
+
+        private void UpdateLives(int lives)
+        {
+            livesText.SetText(lives.ToString());
+
         }
     }
 }
