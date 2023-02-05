@@ -15,10 +15,8 @@ namespace Asteroids.Presentation
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            rigidbody.position = position;
+            transform.position = position;
             rigidbody.velocity = speed * direction;
-
-            
         }
     }
 }
