@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 830847473502895972}
-  velocity: {x: 2, y: 1}
+  speed: 2
+  initialDirection: {x: 1, y: 0}
 --- !u!50 &830847473502895972
 Rigidbody2D:
   serializedVersion: 4
