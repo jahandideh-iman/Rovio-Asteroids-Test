@@ -17,7 +17,7 @@ namespace Asteroids.Game
             this.asteroids = asteroids;
 
             foreach (var asteroid in asteroids)
-                RegisterOnEvents(asteroid);
+                asteroid.OnDamageTaken += SplitAsteroid;
         }
 
         public bool HasAnyAsteroid()
@@ -25,39 +25,34 @@ namespace Asteroids.Game
             return asteroids.Count > 0;
         }
 
-        private void RegisterOnEvents(AsteroidAvatar asteroid)
+        private void SplitAsteroid(AsteroidAvatar asteroid)
         {
-            asteroid.OnDamageTaken += SplitAsteroid;
-            asteroid.OnDestroyed += RemoveFromAsteroids;
+            if (asteroid.Size > 1)
+            {
+                SpawnSmallerAsteroidFrom(asteroid);
+                SpawnSmallerAsteroidFrom(asteroid);
+            }
+
+            Destroy(asteroid);
         }
 
-        private void RemoveFromAsteroids(AsteroidAvatar asteroid)
+        private void SpawnSmallerAsteroidFrom(AsteroidAvatar origianlAsteroid)
+        {
+            var asteroid = UnityEngine.Object.Instantiate(origianlAsteroid, origianlAsteroid.transform.parent, true);
+            asteroid.Setup(origianlAsteroid.Size - 1, RandomDirection());
+
+            asteroids.Add(asteroid);
+            asteroid.OnDamageTaken += SplitAsteroid;
+        }
+
+        private void Destroy(AsteroidAvatar asteroid)
         {
             asteroids.Remove(asteroid);
             asteroid.OnDamageTaken -= SplitAsteroid;
-            asteroid.OnDestroyed -= RemoveFromAsteroids;
+
+            UnityEngine.Object.Destroy(asteroid.gameObject);
 
             OnAsteroidRemoved.Invoke();
-        }
-
-        private void SplitAsteroid(AsteroidAvatar asteroid)
-        {
-            if (asteroid.Health <= 0)
-                return;
-
-            var asteroid1 = UnityEngine.Object.Instantiate(asteroid, asteroid.transform.parent, true);
-            var asteroid2 = UnityEngine.Object.Instantiate(asteroid, asteroid.transform.parent, true);
-
-            asteroid1.Setup(asteroid.Health, RandomDirection());
-            asteroid2.Setup(asteroid.Health, RandomDirection());
-
-            asteroids.Add(asteroid1);
-            asteroids.Add(asteroid2);
-
-            RegisterOnEvents(asteroid1);
-            RegisterOnEvents(asteroid2);
-
-            asteroid.Destroy();
         }
 
         private Vector2 RandomDirection()
