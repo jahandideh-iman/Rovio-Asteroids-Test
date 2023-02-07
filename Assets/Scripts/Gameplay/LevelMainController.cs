@@ -1,13 +1,9 @@
 ﻿using Asteroids.Presentation;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Asteroids.Game
 {
-
     public class LevelMainController : MainGameController
     {
         static readonly int ScorePerAsteroid = 100;

@@ -1,4 +1,5 @@
 
+using Asteroids.Game;
 using System;
 using UnityEngine;
 
@@ -17,11 +18,12 @@ namespace Asteroids.Presentation
 
         public event Action<SpaceshipAvatar> OnDamageTaken = delegate { };
 
+        // NOTE: Ideally the input should be handled in a separate place.
         private void Update()
         {
             if (Input.GetKey(KeyCode.W))
             {
-                rigidbody.AddForce(this.transform.up * thrust);
+                rigidbody.AddForce(transform.up * thrust);
             }
 
             if (Input.GetKey(KeyCode.A))
@@ -36,7 +38,7 @@ namespace Asteroids.Presentation
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                bulletSpawner.SpawnBullet(bulletSpawnPositionTransform.position, this.transform.up);
+                bulletSpawner.SpawnBullet(bulletSpawnPositionTransform.position, transform.up);
             }
         }
         private void OnTriggerEnter2D(Collider2D collision)

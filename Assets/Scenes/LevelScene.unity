@@ -1115,6 +1115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   supportedTags:
   - Bullet
+  boundaryCollider: {fileID: 1226929514}
 --- !u!1001 &1247206263
 PrefabInstance:
   m_ObjectHideFlags: 0

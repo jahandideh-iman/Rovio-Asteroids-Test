@@ -29,14 +29,14 @@ namespace Asteroids.Game
         {
             if (asteroid.Size > 1)
             {
-                SpawnSmallerAsteroidFrom(asteroid);
-                SpawnSmallerAsteroidFrom(asteroid);
+                SpawnOneSmallerAsteroidFrom(asteroid);
+                SpawnOneSmallerAsteroidFrom(asteroid);
             }
 
             Destroy(asteroid);
         }
 
-        private void SpawnSmallerAsteroidFrom(AsteroidAvatar origianlAsteroid)
+        private void SpawnOneSmallerAsteroidFrom(AsteroidAvatar origianlAsteroid)
         {
             var asteroid = UnityEngine.Object.Instantiate(origianlAsteroid, origianlAsteroid.transform.parent, true);
             asteroid.Setup(origianlAsteroid.Size - 1, RandomDirection());

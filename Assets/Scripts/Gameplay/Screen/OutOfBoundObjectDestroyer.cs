@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +8,10 @@ namespace Asteroids.Presentation
     {
         [SerializeField] List<string> supportedTags;
 
-        BoxCollider2D boundaryCollider;
+        [SerializeField] BoxCollider2D boundaryCollider;
 
         void Awake()
         {
-            boundaryCollider = GetComponent<BoxCollider2D>();
             boundaryCollider.isTrigger = true;
         }
 

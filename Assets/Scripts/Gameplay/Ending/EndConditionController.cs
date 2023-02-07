@@ -1,8 +1,6 @@
 
 using Asteroids.Presentation;
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Asteroids.Game
 {
@@ -17,7 +15,11 @@ namespace Asteroids.Game
         LevelEndingPort levelEndingPort;
         AsteroidsController asteroidsController;
 
-        public EndConditionController(SpaceshipAvatar spaceship, AsteroidsController asteroidsController, LevelEndingPort levelEndingPort, Action exitLevelAction)
+        public EndConditionController(
+            SpaceshipAvatar spaceship,
+            AsteroidsController asteroidsController,
+            LevelEndingPort levelEndingPort,
+            Action exitLevelAction)
         {
             this.exitLevelAction = exitLevelAction;
             this.levelEndingPort = levelEndingPort;
