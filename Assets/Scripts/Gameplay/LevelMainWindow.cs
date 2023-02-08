@@ -12,7 +12,7 @@ namespace Asteroids.Presentation
         [SerializeField] MessagePopup messagePromptPopupPrefab;
         [SerializeField] LevelResultPopup levelResultPopupPrefab;
 
-        [SerializeField] TextMeshProUGUI healthText;
+        [SerializeField] TextMeshProUGUI livesText;
         [SerializeField] TextMeshProUGUI scoreText;
 
         LevelMainController mainController;
@@ -21,11 +21,11 @@ namespace Asteroids.Presentation
         {
             this.mainController = mainController;
 
-            mainController.Spaceship.OnDamageTaken += UpdateHealth;
-            mainController.OnScoreChanged += UpdateScore;
+            mainController.OnPlayerLivesChanged += UpdateLives;
+            mainController.OnPlayerScoreChanged += UpdateScore;
 
-            UpdateHealth(mainController.Spaceship);
-            UpdateScore(mainController.Score);
+            UpdateLives(mainController.PlayerLives);
+            UpdateScore(mainController.PlayerScore);
         }
 
         public override void OnBackButtonPressed()
@@ -54,7 +54,7 @@ namespace Asteroids.Presentation
         public void OpenEndScreen(Action onContinue)
         {
             var levelResultPopup = Instantiate(levelResultPopupPrefab);
-            levelResultPopup.Setup(mainController.Score, onContinue);
+            levelResultPopup.Setup(mainController.PlayerScore, onContinue);
             uiManager.OpenPopUp(levelResultPopup);
         }
 
@@ -63,9 +63,9 @@ namespace Asteroids.Presentation
             scoreText.SetText(score.ToString());
         }
 
-        private void UpdateHealth(SpaceshipAvatar spaceship)
+        private void UpdateLives(int lives)
         {
-            healthText.SetText(spaceship.Health.ToString());
+            livesText.SetText(lives.ToString());
         }
     }
 }

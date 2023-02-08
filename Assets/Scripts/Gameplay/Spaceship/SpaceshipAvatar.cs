@@ -2,25 +2,36 @@
 using Asteroids.Game;
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Asteroids.Presentation
 {
     public class SpaceshipAvatar : MonoBehaviour
     {
-        [SerializeField] BulletSpawner bulletSpawner;
-        [SerializeField] Transform bulletSpawnPositionTransform;
+        public event Action<SpaceshipAvatar> OnCollision = delegate { };
+
+        [SerializeField] Transform bulletSpawnPoint;
 
         [SerializeField] new Rigidbody2D rigidbody;
         [SerializeField] float thrust;
         [SerializeField] float torque;
 
-        public int Health { get; private set; } = 3; // TODO: Make it configurable
 
-        public event Action<SpaceshipAvatar> OnDamageTaken = delegate { };
+        BulletSpawner bulletSpawner;
+
+        bool isBeingDestructed = false;
+
+        public void Setup(BulletSpawner bulletSpawner)
+        {
+            this.bulletSpawner = bulletSpawner;
+        }
 
         // NOTE: Ideally the input should be handled in a separate place.
         private void Update()
         {
+            if (isBeingDestructed)
+                return;
+
             if (Input.GetKey(KeyCode.W))
             {
                 rigidbody.AddForce(transform.up * thrust);
@@ -38,25 +49,28 @@ namespace Asteroids.Presentation
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                bulletSpawner.SpawnBullet(bulletSpawnPositionTransform.position, transform.up);
+                bulletSpawner.SpawnBullet(bulletSpawnPoint.position, transform.up);
             }
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Asteroid"))
             {
-                ApplyDamage();
+                OnCollision(this);
             }
         }
 
-        private void ApplyDamage()
+        public void ExecuteDestruction(Action onCompleted)
         {
-            Health -= 1;
+            isBeingDestructed = true;
 
-            OnDamageTaken(this);
+            rigidbody.velocity = Vector2.zero;
 
-            if (Health <= 0)
-                Destroy(this.gameObject);
+            transform.
+                DOScale(0, 0.5f).
+                SetEase(Ease.InCubic).
+                OnComplete(() => { onCompleted.Invoke(); Destroy(this.gameObject); });
         }
     }
 }

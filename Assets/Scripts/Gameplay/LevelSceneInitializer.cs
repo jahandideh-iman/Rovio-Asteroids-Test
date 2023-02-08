@@ -12,7 +12,9 @@ namespace Asteroids.Main
         [SerializeField] LevelMainWindow levelMainWindow = default;
         [SerializeField] Camera mainCamera = default;
 
-        [SerializeField] SpaceshipAvatar spaceshipAvatar;
+        [SerializeField] SpaceshipAvatar spaceshipAvatarPrefab;
+        [SerializeField] Transform spaceShipSpawnPoint;
+        [SerializeField] BulletSpawner bulletSpawner;
 
         private void Awake()
         {
@@ -25,12 +27,18 @@ namespace Asteroids.Main
             var mainController = gameManager.MainController as LevelMainController;
 
             mainController.Setup(
-                spaceshipAvatar,
+                spaceshipFactory: InstantiateSpaceship,
                 new List<AsteroidAvatar>(FindObjectsByType<AsteroidAvatar>(FindObjectsSortMode.None)), 
                 levelEndingPort: levelMainWindow);
 
             levelMainWindow.Setup(mainController);
         }
 
+        SpaceshipAvatar InstantiateSpaceship()
+        {
+            var spaceShip = Instantiate(spaceshipAvatarPrefab, spaceShipSpawnPoint.position, spaceShipSpawnPoint.rotation, spaceShipSpawnPoint.parent);
+            spaceShip.Setup(bulletSpawner);
+            return spaceShip;
+        }
     }
 }

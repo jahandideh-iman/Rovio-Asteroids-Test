@@ -8,35 +8,62 @@ namespace Asteroids.Game
     {
         static readonly int ScorePerAsteroid = 100;
 
-        public event Action<int> OnScoreChanged = delegate { };
+        public event Action<int> OnPlayerScoreChanged = delegate { };
+        public event Action<int> OnPlayerLivesChanged = delegate { };
 
-        readonly Action exitLevelAction;
-
-        public SpaceshipAvatar Spaceship { get; private set; }
-        public int Score { get; private set; }
+        public int PlayerScore { get; private set; }
+        public int PlayerLives
+        {
+            get => playerLives;
+            private set { playerLives = value; OnPlayerLivesChanged.Invoke(playerLives); }
+        }
 
         AsteroidsController asteroidsController;
         EndConditionController endConditionController;
+
+        readonly Action exitLevelAction;
+
+        int playerLives = 3; // TODO: Make it configurable
+        Func<SpaceshipAvatar> spaceshipFactory;
 
         public LevelMainController(Action exitLevelAction)
         {
             this.exitLevelAction = exitLevelAction;
         }
 
-        public void Setup(SpaceshipAvatar spaceship, List<AsteroidAvatar> asteroids, LevelEndingPort levelEndingPort)
+        public void Setup(Func<SpaceshipAvatar> spaceshipFactory, List<AsteroidAvatar> asteroids, LevelEndingPort levelEndingPort)
         {
-            Spaceship = spaceship;
+            this.spaceshipFactory = spaceshipFactory;
 
             asteroidsController = new AsteroidsController(asteroids);
             asteroidsController.OnAsteroidRemoved += HandleAsteroidScore;
-            endConditionController = new EndConditionController(spaceship, asteroidsController, levelEndingPort, ExitLevel);
+            endConditionController = new EndConditionController(this, asteroidsController, levelEndingPort, ExitLevel);
+
+            SpawnSpaceShip();
+        }
+
+        private void SpawnSpaceShip()
+        {
+            var spaceShip = spaceshipFactory.Invoke();
+            spaceShip.OnCollision += HandleSpaceshipCollision;
+        }
+
+        private void HandleSpaceshipCollision(SpaceshipAvatar spaceShip)
+        {
+            spaceShip.OnCollision -= HandleSpaceshipCollision;
+            PlayerLives -= 1;
+
+            if (PlayerLives > 0)
+                spaceShip.ExecuteDestruction(onCompleted: SpawnSpaceShip);
+            else
+                spaceShip.ExecuteDestruction(onCompleted: delegate { });
         }
 
         private void HandleAsteroidScore()
         {
             // NOTE: Scoring system can be improved.
-            Score += ScorePerAsteroid;
-            OnScoreChanged.Invoke(Score);
+            PlayerScore += ScorePerAsteroid;
+            OnPlayerScoreChanged.Invoke(PlayerScore);
         }
 
         public void ExitLevel()

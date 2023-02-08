@@ -14,27 +14,28 @@ namespace Asteroids.Game
         Action exitLevelAction;
         LevelEndingPort levelEndingPort;
         AsteroidsController asteroidsController;
+        LevelMainController levelMainController;
 
-        public EndConditionController(
-            SpaceshipAvatar spaceship,
+        public EndConditionController(LevelMainController levelMainController,
             AsteroidsController asteroidsController,
             LevelEndingPort levelEndingPort,
             Action exitLevelAction)
         {
-            this.exitLevelAction = exitLevelAction;
-            this.levelEndingPort = levelEndingPort;
+            this.levelMainController = levelMainController;
             this.asteroidsController = asteroidsController;
 
-            spaceship.OnDamageTaken += CheckSpaceshipHealth;
+            this.levelEndingPort = levelEndingPort;
+            this.exitLevelAction = exitLevelAction;
+
+            levelMainController.OnPlayerLivesChanged += CheckPlayerLives;
             asteroidsController.OnAsteroidRemoved += CheckAsteroids;
         }
 
-        private void CheckSpaceshipHealth(SpaceshipAvatar spaceship)
+        private void CheckPlayerLives(int lives)
         {
-            if (spaceship.Health <= 0)
+            if (lives <= 0)
             {
-                spaceship.OnDamageTaken -= CheckSpaceshipHealth;
-
+                UnregisterFromEvents();
                 levelEndingPort.OpenEndScreen(onContinue: exitLevelAction);
             }
         }
@@ -43,9 +44,15 @@ namespace Asteroids.Game
         {
             if (!asteroidsController.HasAnyAsteroid())
             {
-                asteroidsController.OnAsteroidRemoved -= CheckAsteroids;
+                UnregisterFromEvents();
                 levelEndingPort.OpenEndScreen(onContinue: exitLevelAction);
             }
+        }
+
+        private void UnregisterFromEvents()
+        {
+            asteroidsController.OnAsteroidRemoved -= CheckAsteroids;
+            levelMainController.OnPlayerLivesChanged -= CheckPlayerLives;
         }
     }
 }

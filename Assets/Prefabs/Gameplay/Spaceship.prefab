@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2888164397652868025}
   m_Layer: 0
-  m_Name: BulletSpawnPosition
+  m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpawner: {fileID: 0}
-  bulletSpawnPositionTransform: {fileID: 2888164397652868025}
+  bulletSpawnPoint: {fileID: 2888164397652868025}
   rigidbody: {fileID: 8260024771712307561}
   thrust: 1
   torque: 1
